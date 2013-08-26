@@ -2884,6 +2884,17 @@ at91sam9x5ek_config	:	unconfig
 
 	@$(MKCONFIG) -a at91sam9x5ek arm arm926ejs at91sam9x5ek atmel at91
 
+at91sam9x5fc_nandflash_config \
+at91sam9x5fc_config	:	unconfig
+	@mkdir -p $(obj)include
+	@echo "#define CONFIG_AT91SAM9X5FC 1"	>>$(obj)include/config.h ; \
+	$(XECHO) "... 9X5FC Variant" ; \
+
+	@echo "#define CONFIG_SYS_USE_NANDFLASH 1"	>>$(obj)include/config.h ; \
+	$(XECHO) "... with environment variable in NAND FLASH" ; \
+
+	@$(MKCONFIG) -a at91sam9x5fc arm arm926ejs at91sam9x5fc atmel at91
+
 otc570_config	:	unconfig
 	@$(MKCONFIG) $(@:_config=) arm arm926ejs otc570 esd at91
 
