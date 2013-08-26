@@ -36,7 +36,7 @@
  */
 #define TIMER_LOAD_VAL	0xfffff
 
-static ulong timestamp;
+static long long timestamp;
 static ulong lastinc;
 static ulong timer_freq;
 
@@ -138,8 +138,5 @@ ulong get_timer(ulong base)
  */
 ulong get_tbclk(void)
 {
-	ulong tbclk;
-
-	tbclk = CONFIG_SYS_HZ;
-	return tbclk;
+	return timer_freq;
 }

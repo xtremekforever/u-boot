@@ -383,7 +383,14 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char *argv[])
 							 (u_char *)addr);
 			else
 				ret = nand_write_skip_bad(nand, off, &size,
-							  (u_char *)addr);
+							  (u_char *)addr, 0);
+		} else if (!strcmp(s, ".trimffs")) {
+			if (read) {
+				printf("Unknown nand command suffix '%s'.\n", s);
+				return 1;
+			}
+			ret = nand_write_skip_bad(nand, off, &size,
+					(u_char *)addr, WITH_DROP_FFS);
 		} else if (!strcmp(s, ".oob")) {
 			/* out-of-band data */
 			mtd_oob_ops_t ops = {
@@ -489,6 +496,11 @@ U_BOOT_CMD(nand, CONFIG_SYS_MAXARGS, 1, do_nand,
 	"nand write - addr off|partition size\n"
 	"    read/write 'size' bytes starting at offset 'off'\n"
 	"    to/from memory address 'addr', skipping bad blocks.\n"
+	"nand write.trimffs - addr off|partition size\n"
+	"    write 'size' bytes starting at offset 'off'\n"
+	"    from memory address 'addr', skipping bad blocks and "
+	"dropping any pages at the\n"
+	"    end of eraseblocks that contain only 0xFF\n"
 	"nand erase [clean] [off size] - erase 'size' bytes from\n"
 	"    offset 'off' (entire device if not specified)\n"
 	"nand bad - show bad blocks\n"
